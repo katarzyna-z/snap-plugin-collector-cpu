@@ -362,6 +362,8 @@ func getStats(path string, stats map[string]map[string]interface{}, prevMetricsS
 						return err
 					}
 
+					fmt.Fprintf(os.Stderr, "Percentage value of %v could not be calculated due to invalid data reported by /proc/stat", getNamespaceMetricPart(metricName, percentageRepresentationType))
+
 					if percVal := float64(100 * (currVal - prevVal) / diffSum); percVal < 0 {
 						fmt.Fprintf(os.Stderr, "Percentage value of %v could not be calculated due to invalid data reported by /proc/stat", getNamespaceMetricPart(metricName, percentageRepresentationType))
 					} else {
