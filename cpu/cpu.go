@@ -30,6 +30,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"math/rand"
 
 	"github.com/intelsdi-x/snap/control/plugin"
 	"github.com/intelsdi-x/snap/control/plugin/cpolicy"
@@ -362,7 +363,15 @@ func getStats(path string, stats map[string]map[string]interface{}, prevMetricsS
 						return err
 					}
 
-					fmt.Fprintf(os.Stderr, "Percentage value of %v could not be calculated due to invalid data reported by /proc/stat", getNamespaceMetricPart(metricName, percentageRepresentationType))
+					//fmt.Fprintf(os.Stderr, "Percentage value of %v could not be calculated due to invalid data reported by /proc/stat", getNamespaceMetricPart(metricName, percentageRepresentationType))
+
+					letterBytes := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+					longLine := []byte{}
+					for i := 0; i < 8193; i++ {
+						longLine = append(longLine, letterBytes[rand.Intn(len(letterBytes))])
+					}
+
+					fmt.Fprintf(os.Stderr, "%v" , longLine)
 
 					if percVal := float64(100 * (currVal - prevVal) / diffSum); percVal < 0 {
 						fmt.Fprintf(os.Stderr, "Percentage value of %v could not be calculated due to invalid data reported by /proc/stat", getNamespaceMetricPart(metricName, percentageRepresentationType))
